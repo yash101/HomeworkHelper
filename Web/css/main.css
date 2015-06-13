@@ -1,0 +1,36 @@
+body
+{
+	background-color: white;
+}
+
+.Header
+{
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	height: 64px;
+	right: 0px;
+	background-color: #404040;
+	border-bottom: 4px solid #98BF21;
+}
+
+.Sidebar
+{
+	position: absolute;
+	top: 68px;
+	left: 0px;
+	width: 250px;
+	bottom: 0px;
+	background-color: #C6C6C6;
+	border-right: 4px solid #98BF21;
+}
+
+.WindowLocation
+{
+	position: absolute;
+	top: 68px;
+	left: 254px;
+	bottom: 0px;
+	right: 0px;
+	background-color: white;
+}
