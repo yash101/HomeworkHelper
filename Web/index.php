@@ -13,13 +13,16 @@
 		<div class="WindowLocation">
 			<div class="Window" id="Window0">
 				<div class="titlebar">
-					<div id="minimize"></div>
-					<div id="resize"></div>
-					<div id="exit"></div>
+					<div class="iIcon"></div>
+					<div class="tLabel">Title</div>
+					<div class="moveHandle"></div>
+					<div class="mButton"></div>
+					<div class="rButton"></div>
+					<div class="xButton"></div>
 				</div>
 				<div class="content"></div>
 				<div class="statusbar">
-					<div id="resize"></div>
+					<div class="resize"></div>
 				</div>
 			</div>
 		</div>

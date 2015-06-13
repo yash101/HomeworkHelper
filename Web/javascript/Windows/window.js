@@ -100,7 +100,55 @@ var Window = function(size, position)
 	document.querySelectorAll(".WindowLocation #Window" + this.windowNum)[0].style.left = this.position.getX() + "px";
 
 	WindowServer.OpenWindows.set(this.windowNum, this);
+
+	var startP = this.position;
+	this.mouseDown = false;
+
+	$(".WindowLocation #Window" + this.windowNum + " .titlebar .moveHandle").on("mousedown", {arg1: this.windowNum}, function(x)
+	{
+		var win = WindowServer.OpenWindows.get(x.data.arg1);
+		WindowServer.OpenWindows.get(x.data.arg1).mouseDown = true;
+		var startX = WindowServer.OpenWindows.get(x.data.arg1).startX - x.pageX;
+		var startY = WindowServer.OpenWindows.get(x.data.arg1).startY - x.pageY;
+	}).on("mouseup", {arg1: this.windowNum}, function(x)
+	{
+		WindowServer.OpenWindows.get(x.data.arg1).mouseDown = false;
+	}).on("mousemove", {arg1: this.windowNum}, function(x)
+	{
+		if(WindowServer.OpenWindows.get(x.data.arg1).mouseDown)
+		{
+			var pt = new Point(x.pageX - WindowServer.OpenWindows.get(x.data.arg1).startX, x.pageY - WindowServer.OpenWindows.get(x.data.arg1).startY);
+			var newpos = new Point(WindowServer.OpenWindows.get(x.data.arg1).position.getX() + pt.getX(), WindowServer.OpenWindows.get(x.data.arg1).position.getY() + pt.getY());
+			WindowServer.OpenWindows.get(x.data.arg1).position = newpos;
+			document.querySelectorAll(".WindowLocation #Window" + WindowServer.OpenWindows.get(x.data.arg1).windowNum)[0].style.top = WindowServer.OpenWindows.get(x.data.arg1).position.getY() + "px";
+			document.querySelectorAll(".WindowLocation #Window" + WindowServer.OpenWindows.get(x.data.arg1).windowNum)[0].style.left = WindowServer.OpenWindows.get(x.data.arg1).position.getX() + "px";
+		}
+	});
 };
+
+Window.prototype.setPosition = function(pos)
+{
+	this.position = pos;
+	document.querySelectorAll(".WindowLocation #Window" + this.windowNum)[0].style.top = this.position.getY() + "px";
+	document.querySelectorAll(".WindowLocation #Window" + this.windowNum)[0].style.left = this.position.getX() + "px";
+};
+
+Window.prototype.setSize = function(sz)
+{
+	this.size = sz;
+	document.querySelectorAll(".WindowLocation #Window" + this.windowNum)[0].style.width = this.size.getWidth() + 8 + "px";
+	document.querySelectorAll(".WindowLocation #Window" + this.windowNum)[0].style.height = this.size.getHeight() + 8 + 24 + 16 + "px";
+}
+
+Window.prototype.getPosition = function()
+{
+	return this.position;
+}
+
+Window.prototype.getSize = function()
+{
+	return this.size;
+}
 
 var WindowServer =
 {
