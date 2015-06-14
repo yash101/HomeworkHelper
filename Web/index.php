@@ -8,6 +8,8 @@
 		<title>HomeworkHelper | Homework Organization</title>
 		<script type="text/javascript" src="javascript/lib/jquery/jquery-1.11.3.js"></script>
 		<script type="text/javascript" src="javascript/loader.js"></script>
+		<link rel="stylesheet" type="text/css" href="ext/jqueryui/jquery-ui.css">
+		<script type="text/javascript" src="ext/jqueryui/jquery-ui.js"></script>
 	</head>
 	<body>
 		<div class="WindowLocation">

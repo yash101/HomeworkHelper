@@ -108,6 +108,7 @@ var Window = function(size, position)
 	// this.pos = new Point(0, 0);
 	// this.startPos = new Point(0, 0);
 
+	//Drag and drop of the window
 	$(".WindowLocation #Window" + this.windowNum + " .titlebar .moveHandle").on("mousedown", {arg1: this.windowNum}, function(x)
 	{
 		WindowServer.OpenWindows.get(x.data.arg1).mouseDown = true;
@@ -130,11 +131,15 @@ var Window = function(size, position)
 		WindowServer.OpenWindows.get(x.data.arg1).mouseDown = false;
 	});
 
+	//Closing the window
 	$(".WindowLocation #Window" + this.windowNum + " .titlebar .xButton").on("click", {arg1: this.windowNum}, function(x)
 	{
 		$(".WindowLocation #Window" + x.data.arg1).remove();
 		WindowServer.OpenWindows.remove(x.data.arg1);
 	});
+
+	//Resizing the window
+	$(".WindowLocation #Window" + this.windowNum).resizable();
 };
 
 Window.prototype.setPosition = function(pos)
@@ -147,8 +152,8 @@ Window.prototype.setPosition = function(pos)
 Window.prototype.setSize = function(sz)
 {
 	this.size = sz;
-	document.querySelectorAll(".WindowLocation #Window" + this.windowNum)[0].style.width = this.size.getWidth() + 8 + "px";
-	document.querySelectorAll(".WindowLocation #Window" + this.windowNum)[0].style.height = this.size.getHeight() + 8 + 24 + 16 + "px";
+	document.querySelectorAll(".WindowLocation #Window" + this.windowNum)[0].style.width = this.size.getWidth() + "px";
+	document.querySelectorAll(".WindowLocation #Window" + this.windowNum)[0].style.height = this.size.getHeight() + "px";
 };
 
 Window.prototype.getPosition = function()
@@ -174,7 +179,7 @@ Window.prototype.setIcon = function(css)
 Window.prototype.setText = function(text)
 {
 	document.querySelectorAll(".WindowLocation #Window" + this.windowNum + " .content")[0].innerHTML = text;
-}
+};
 
 var WindowServer =
 {

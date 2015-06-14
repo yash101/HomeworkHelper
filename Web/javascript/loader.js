@@ -7,5 +7,6 @@ $(document).ready(function()
 	$.getScript("javascript/Windows/window.js", function(data, status, httpreq)
 	{
 		winInit();
+		var x = new Window(new Size(320, 240), new Point(100, 100));
 	});
 });

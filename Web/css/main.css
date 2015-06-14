@@ -8,16 +8,16 @@ body
 	position: absolute;
 	top: 0px;
 	left: 0px;
-	height: 64px;
+	height: 24px;
 	right: 0px;
 	background-color: #404040;
-	border-bottom: 4px solid #98BF21;
+	border-bottom: 1px solid black;
 }
 
 .WindowLocation
 {
 	position: absolute;
-	top: 68px;
+	top: 25px;
 	left: 0px;
 	bottom: 0px;
 	right: 0px;
