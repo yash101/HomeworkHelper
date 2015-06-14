@@ -2,6 +2,7 @@ var winInit = function()
 {
 	WindowServer.init();
 	$("head").append('<link rel="stylesheet" type="text/css" href="css/Windows/window.css">');
+	$(".WindowLocation").disableSelection();
 };
 
 var Size = function(x, y)
@@ -124,7 +125,13 @@ var Window = function(size, position)
 			//Find the distance the mouse was moved
 			var transmat = new Point(x.pageX - WindowServer.OpenWindows.get(x.data.arg1).lastPoint.getX(), x.pageY - WindowServer.OpenWindows.get(x.data.arg1).lastPoint.getY());
 			WindowServer.OpenWindows.get(x.data.arg1).lastPoint = new Point(x.pageX, x.pageY);
-			WindowServer.OpenWindows.get(x.data.arg1).setPosition(new Point(win.getPosition().getX() + transmat.getX(), win.getPosition().getY() + transmat.getY()));
+			var newpt = new Point(win.getPosition().getX() + transmat.getX(), win.getPosition().getY() + transmat.getY());
+			if(newpt.getX() < 64) newpt.setX(64);
+			if(newpt.getY() < 0) newpt.setY(0);
+			if(newpt.getY() > document.querySelectorAll(".WindowLocation")[0].offsetHeight - 24) newpt.setY(document.querySelectorAll(".WindowLocation")[0].offsetHeight - 24);
+			if(newpt.getX() > document.querySelectorAll(".WindowLocation")[0].offsetWidth - 24) newpt.setY(document.querySelectorAll(".WindowLocation")[0].offsetWidth - 24);
+
+			WindowServer.OpenWindows.get(x.data.arg1).setPosition(newpt);
 		}
 	}).on("mouseleave", {arg1: this.windowNum}, function(x)
 	{
@@ -135,7 +142,16 @@ var Window = function(size, position)
 	$(".WindowLocation #Window" + this.windowNum + " .titlebar .xButton").on("click", {arg1: this.windowNum}, function(x)
 	{
 		$(".WindowLocation #Window" + x.data.arg1).remove();
-		WindowServer.OpenWindows.remove(x.data.arg1);
+		delete WindowServer.OpenWindows[x.data.arg1];
+	});
+
+	$(".WindowLocation #Window" + this.windowNum + " .titlebar .rButton").on("click", {arg1: this.windowNum}, function(x)
+	{
+		WindowServer.OpenWindows.get(x.data.arg1).setSize(new Size(
+			document.querySelectorAll(".WindowLocation")[0].offsetWidth - 64 - 4,
+			document.querySelectorAll(".WindowLocation")[0].offsetHeight - 4
+		));
+		WindowServer.OpenWindows.get(x.data.arg1).setPosition(new Point(64, 0));
 	});
 
 	//Resizing the window
@@ -194,4 +210,9 @@ var WindowServer =
 		WindowServer.DefaultWindowSize = new Size(100, 100);
 		WindowServer.DefaultWindowPosition = new Point(0, 0);
 	}
+};
+
+var generateWindowIFrameCode = function(url)
+{
+	return "<iframe src=\"url\" class=\"WindowFullIFrame\"></iframe>";
 };

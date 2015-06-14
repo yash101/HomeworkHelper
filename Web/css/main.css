@@ -26,3 +26,13 @@ body
 	overflow-y: hidden;
 	overflow-x: hidden;
 }
+
+.launcher
+{
+	position: absolute;
+	top: 25px;
+	bottom: 0px;
+	left: 0px;
+	width: 64px;
+	background-color: rgba(0, 0, 0, 0.5);
+}

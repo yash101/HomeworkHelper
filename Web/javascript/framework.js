@@ -1,46 +1,50 @@
 //AJAX functions
-var ajax =
+var ajaxclss_int = function()
 {
-	asynchronous:true,
-	timeout:8000,
-	get:function(location, callback)
-	{
-		var request = new XMLHttpRequest();
-		request.onreadystatechange = function()
-		{
-			if(request.readyState == 4)
-			{
-				if(callback != null && callback != undefined)
-				{
-					callback(request.responseText);
-				}
-			}
-		};
+	this.asynchronous = true;
+	this.timeout = 8000;
+};
 
-		request.timeout = timeout;
-		request.open("GET", location, asynchronous);
-		request.send();
-	},
-	post:function(location, data, callback)
+ajaxclss_int.prototype.get = function(location, callback)
+{
+	var request = new XMLHttpRequest();
+	request.onreadystatechange = function()
 	{
-		var request = new XMLHttpRequest();
-		request.onreadystatechange = function()
+		if(request.readyState == 4)
 		{
-			if(request.readyState == 4)
+			if(callback != null && callback != undefined)
 			{
-				if(callback != null && callback != undefined)
-				{
-					callback(request.responseText)
-				}
+				callback(request.responseText);
 			}
-		};
+		}
+	};
 
-		request.timeout = timeout;
-		request.open("POST", location, asynchronous);
-		request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-		request.send(data);
-	}
-}
+	request.timeout = this.timeout;
+	request.open("GET", location, this.asynchronous);
+	request.send();
+};
+
+ajaxclss_int.prototype.post = function(location, data, callback)
+{
+	var request = new XMLHttpRequest();
+	request.onreadystatechange = function()
+	{
+		if(request.readyState == 4)
+		{
+			if(callback != null && callback != undefined)
+			{
+				callback(request.responseText);
+			}
+		}
+	};
+
+	request.timeout = this.timeout;
+	request.open("POST", location, this.asynchronous);
+	request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	request.send(data);
+};
+
+var ajax = new ajaxclss_int();
 
 //Configuration file parser
 var ConfigurationParser = function(data)
