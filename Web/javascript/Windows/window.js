@@ -94,6 +94,8 @@ var Window = function(size, position)
 	});
 	this.windowFrame.appendTo(".WindowLocation");
 
+	document.querySelectorAll(".WindowLocation #Window" + this.windowNum)[0].style.display = "block";
+
 	document.querySelectorAll(".WindowLocation #Window" + this.windowNum)[0].style.width = this.size.getWidth() + 8 + "px";
 	document.querySelectorAll(".WindowLocation #Window" + this.windowNum)[0].style.height = this.size.getHeight() + 8 + 24 + 16 + "px";
 	document.querySelectorAll(".WindowLocation #Window" + this.windowNum)[0].style.top = this.position.getY() + "px";
@@ -120,20 +122,18 @@ var Window = function(size, position)
 			var win = WindowServer.OpenWindows.get(x.data.arg1);
 			//Find the distance the mouse was moved
 			var transmat = new Point(x.pageX - WindowServer.OpenWindows.get(x.data.arg1).lastPoint.getX(), x.pageY - WindowServer.OpenWindows.get(x.data.arg1).lastPoint.getY());
-
 			WindowServer.OpenWindows.get(x.data.arg1).lastPoint = new Point(x.pageX, x.pageY);
-
 			WindowServer.OpenWindows.get(x.data.arg1).setPosition(new Point(win.getPosition().getX() + transmat.getX(), win.getPosition().getY() + transmat.getY()));
-			// //Difference from mouse position
-			// var newmouserel = new Point(x.pageX - win.getPosition().getX(), x.pageY - win.getPosition().getY());
-			// var transmat = new Point(newmouserel.getX() - win.mouseRel.getX(), newmouserel.getY() - win.mouseRel.getY());
-			// WindowServer.OpenWindows.get(x.data.arg1).setPosition(new Point(win.getPosition().getX() + transmat.getX(), win.getPosition().getY() + transmat.getY()));
 		}
+	}).on("mouseleave", {arg1: this.windowNum}, function(x)
+	{
+		WindowServer.OpenWindows.get(x.data.arg1).mouseDown = false;
 	});
 
 	$(".WindowLocation #Window" + this.windowNum + " .titlebar .xButton").on("click", {arg1: this.windowNum}, function(x)
 	{
 		$(".WindowLocation #Window" + x.data.arg1).remove();
+		WindowServer.OpenWindows.remove(x.data.arg1);
 	});
 };
 
@@ -149,16 +149,31 @@ Window.prototype.setSize = function(sz)
 	this.size = sz;
 	document.querySelectorAll(".WindowLocation #Window" + this.windowNum)[0].style.width = this.size.getWidth() + 8 + "px";
 	document.querySelectorAll(".WindowLocation #Window" + this.windowNum)[0].style.height = this.size.getHeight() + 8 + 24 + 16 + "px";
-}
+};
 
 Window.prototype.getPosition = function()
 {
 	return this.position;
-}
+};
 
 Window.prototype.getSize = function()
 {
 	return this.size;
+};
+
+Window.prototype.setTitle = function(title)
+{
+	document.querySelectorAll(".WindowLocation #Window" + this.windowNum + " .titlebar .tLabel")[0].innerHTML = title;
+};
+
+Window.prototype.setIcon = function(css)
+{
+	document.querySelectorAll(".WindowLocation #Window" + this.windowNum + " .titlebar .iIcon")[0].style.backgroundImage = css;
+};
+
+Window.prototype.setText = function(text)
+{
+	document.querySelectorAll(".WindowLocation #Window" + this.windowNum + " .content")[0].innerHTML = text;
 }
 
 var WindowServer =
