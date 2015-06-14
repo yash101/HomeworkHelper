@@ -27,9 +27,6 @@
 			</div>
 		</div>
 
-		<div class="Sidebar">
-		</div>
-
 		<div class="Header">
 		</div>
 

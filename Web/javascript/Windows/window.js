@@ -101,15 +101,15 @@ var Window = function(size, position)
 
 	WindowServer.OpenWindows.set(this.windowNum, this);
 
-	var startP = this.position;
 	this.mouseDown = false;
+	this.lastPoint = new Point(0, 0);
+	// this.pos = new Point(0, 0);
+	// this.startPos = new Point(0, 0);
 
 	$(".WindowLocation #Window" + this.windowNum + " .titlebar .moveHandle").on("mousedown", {arg1: this.windowNum}, function(x)
 	{
-		var win = WindowServer.OpenWindows.get(x.data.arg1);
 		WindowServer.OpenWindows.get(x.data.arg1).mouseDown = true;
-		var startX = WindowServer.OpenWindows.get(x.data.arg1).startX - x.pageX;
-		var startY = WindowServer.OpenWindows.get(x.data.arg1).startY - x.pageY;
+		WindowServer.OpenWindows.get(x.data.arg1).lastPoint = new Point(x.pageX, x.pageY);
 	}).on("mouseup", {arg1: this.windowNum}, function(x)
 	{
 		WindowServer.OpenWindows.get(x.data.arg1).mouseDown = false;
@@ -117,12 +117,23 @@ var Window = function(size, position)
 	{
 		if(WindowServer.OpenWindows.get(x.data.arg1).mouseDown)
 		{
-			var pt = new Point(x.pageX - WindowServer.OpenWindows.get(x.data.arg1).startX, x.pageY - WindowServer.OpenWindows.get(x.data.arg1).startY);
-			var newpos = new Point(WindowServer.OpenWindows.get(x.data.arg1).position.getX() + pt.getX(), WindowServer.OpenWindows.get(x.data.arg1).position.getY() + pt.getY());
-			WindowServer.OpenWindows.get(x.data.arg1).position = newpos;
-			document.querySelectorAll(".WindowLocation #Window" + WindowServer.OpenWindows.get(x.data.arg1).windowNum)[0].style.top = WindowServer.OpenWindows.get(x.data.arg1).position.getY() + "px";
-			document.querySelectorAll(".WindowLocation #Window" + WindowServer.OpenWindows.get(x.data.arg1).windowNum)[0].style.left = WindowServer.OpenWindows.get(x.data.arg1).position.getX() + "px";
+			var win = WindowServer.OpenWindows.get(x.data.arg1);
+			//Find the distance the mouse was moved
+			var transmat = new Point(x.pageX - WindowServer.OpenWindows.get(x.data.arg1).lastPoint.getX(), x.pageY - WindowServer.OpenWindows.get(x.data.arg1).lastPoint.getY());
+
+			WindowServer.OpenWindows.get(x.data.arg1).lastPoint = new Point(x.pageX, x.pageY);
+
+			WindowServer.OpenWindows.get(x.data.arg1).setPosition(new Point(win.getPosition().getX() + transmat.getX(), win.getPosition().getY() + transmat.getY()));
+			// //Difference from mouse position
+			// var newmouserel = new Point(x.pageX - win.getPosition().getX(), x.pageY - win.getPosition().getY());
+			// var transmat = new Point(newmouserel.getX() - win.mouseRel.getX(), newmouserel.getY() - win.mouseRel.getY());
+			// WindowServer.OpenWindows.get(x.data.arg1).setPosition(new Point(win.getPosition().getX() + transmat.getX(), win.getPosition().getY() + transmat.getY()));
 		}
+	});
+
+	$(".WindowLocation #Window" + this.windowNum + " .titlebar .xButton").on("click", {arg1: this.windowNum}, function(x)
+	{
+		$(".WindowLocation #Window" + x.data.arg1).remove();
 	});
 };
 
