@@ -1,0 +1,61 @@
+.launcher .LauncherButton
+{
+	margin: 4px;
+	width: 54px;
+	height: 54px;
+	border: 1px solid black;
+	border-radius: 4px;
+}
+
+.launcher #startButton
+{
+	background-image: url(../resources/images/icons/WindowIcon.png);
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+}
+
+.LaunchScreen
+{
+	position: fixed;
+	top: -100%;
+	left: 0px;
+	bottom: 100%px;
+	right: 0px;
+
+	-webkit-transition: all .5s ease-in-out;
+	-moz-transition: all .5s ease-in-out;
+	-ms-transition: all .5s ease-in-out;
+	-o-transition: all .5s ease-in-out;
+	transition: all .5s ease-in-out;
+}
+
+.LaunchScreen #background
+{
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
+	-webkit-filter: blur(5px);
+	background-color: #000000;
+	opacity: 0.4;
+}
+
+.LaunchScreen #window
+{
+	position: absolute;
+	top: 25px;
+	left: 64px;
+	right: 10%;
+	bottom: 5%;
+	background-color: #000000;
+	opacity: 0.8;
+
+	-webkit-border-radius: 0px 0px 16px 0px;
+	-moz-border-radius: 0px 0px 16px 0px;
+	-ms-radius: 0px 0px 16px 0px;
+	-o-radius: 0px 0px 16px 0px;
+	border-radius: 0px 0px 16px 0px;
+
+	border: 0px solid #000000;
+}
