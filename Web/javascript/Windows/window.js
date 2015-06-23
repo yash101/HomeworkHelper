@@ -109,8 +109,7 @@ var Window = function(size, position)
 //	$(".WindowLocation #Window" + this.windowNum).draggable();
 	$(".WindowLocation #Window" + this.windowNum).draggable({
 		handle: ".titlebar .moveHandle",
-		containment: ".WindowLocation",
-		animate:true
+		containment: ".WindowLocation"
 	});
 
 	//**&*These commented lines are for my initial drag and drop code. I switched to jquery because it's probably better

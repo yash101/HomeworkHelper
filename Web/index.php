@@ -1,5 +1,5 @@
 <?php
-//This is the main homepage
+//This is the main app homepage
 ?>
 
 <!DOCTYPE html>
