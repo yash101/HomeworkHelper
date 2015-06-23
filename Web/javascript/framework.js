@@ -1,11 +1,11 @@
 //AJAX functions
-var ajaxclss_int = function()
+var Ajax = function()
 {
 	this.asynchronous = true;
 	this.timeout = 8000;
 };
 
-ajaxclss_int.prototype.get = function(location, callback)
+Ajax.prototype.get = function(location, callback)
 {
 	var request = new XMLHttpRequest();
 	request.onreadystatechange = function()
@@ -24,7 +24,7 @@ ajaxclss_int.prototype.get = function(location, callback)
 	request.send();
 };
 
-ajaxclss_int.prototype.post = function(location, data, callback)
+Ajax.prototype.post = function(location, data, callback)
 {
 	var request = new XMLHttpRequest();
 	request.onreadystatechange = function()
@@ -44,7 +44,7 @@ ajaxclss_int.prototype.post = function(location, data, callback)
 	request.send(data);
 };
 
-var ajax = new ajaxclss_int();
+var ajax = new Ajax();
 
 //Configuration file parser
 var ConfigurationParser = function(data)
@@ -80,6 +80,33 @@ ConfigurationParser.prototype.refresh = function()
 {
 	var mp = new Map();
 	var lines = this.file.split('\n');
+
+	//****Reimplementation may occur in the future. Just leaving this here.
+
+	// for(var i = 0; i < lines.length; i++)
+	// {
+	// 	lines[i].trim();
+	// 	//Get rid of the comments
+	// 	if(lines[i].indexOf('#') == 0) continue;
+	// 	else lines[i] = lines[i].substring(0, lines[i].indexOf('#'));
+
+	// 	var key = lines[i].substring(0, lines[i].indexOf(':') - 1);
+	// 	var value = "";
+	// 	if(!(lines[i].indexOf(':') < 0 || lines[i].indexOf(':') > lines[i].length))
+	// 	{
+	// 		value = lines[i].substring(indexOf(':') + 1, lines[i].length);
+	// 	}
+
+	// 	key.trim();
+	// 	value.trim();
+	// 	if(key[0] == '\"' && key[key.length] == '\"') key = key.substring(1, key.length - 1);
+	// 	if(value[0] == '\"' && value[value.length] == '\"') value = value.substring(1, value.length - 1);
+
+	// 	console.log("[" + key + "]->[" + value + "]");
+
+	// 	mp.set(key, value);
+	// }
+
 	for(var i = 0; i < lines.length; i++)
 	{
 		lines[i] = lines[i].split('#')[0];
@@ -112,21 +139,8 @@ ConfigurationParser.prototype.getMap = function()
 	return this.map;
 };
 
-var Layout = function()
-{	
+ConfigurationParser.prototype.tryBool = function(key)
+{
+	var ans = this.map.get(key).toLowerCase();
+	return ans == "1" || ans == "yes" || ans == "true" || ans == "y" || ans == "t";
 }
-
-Layout.prototype.showHeader = function()
-{}
-
-Layout.prototype.showSidebar = function()
-{}
-
-Layout.prototype.showContent = function()
-{}
-
-Layout.prototype.showFooter = function()
-{}
-
-Layout.prototype.showWindow = function()
-{}

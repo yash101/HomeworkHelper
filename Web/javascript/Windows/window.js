@@ -104,39 +104,49 @@ var Window = function(size, position)
 
 	WindowServer.OpenWindows.set(this.windowNum, this);
 
-	this.mouseDown = false;
-	this.lastPoint = new Point(0, 0);
-	// this.pos = new Point(0, 0);
-	// this.startPos = new Point(0, 0);
 
-	//Drag and drop of the window
-	$(".WindowLocation #Window" + this.windowNum + " .titlebar .moveHandle").on("mousedown", {arg1: this.windowNum}, function(x)
-	{
-		WindowServer.OpenWindows.get(x.data.arg1).mouseDown = true;
-		WindowServer.OpenWindows.get(x.data.arg1).lastPoint = new Point(x.pageX, x.pageY);
-	}).on("mouseup", {arg1: this.windowNum}, function(x)
-	{
-		WindowServer.OpenWindows.get(x.data.arg1).mouseDown = false;
-	}).on("mousemove", {arg1: this.windowNum}, function(x)
-	{
-		if(WindowServer.OpenWindows.get(x.data.arg1).mouseDown)
-		{
-			var win = WindowServer.OpenWindows.get(x.data.arg1);
-			//Find the distance the mouse was moved
-			var transmat = new Point(x.pageX - WindowServer.OpenWindows.get(x.data.arg1).lastPoint.getX(), x.pageY - WindowServer.OpenWindows.get(x.data.arg1).lastPoint.getY());
-			WindowServer.OpenWindows.get(x.data.arg1).lastPoint = new Point(x.pageX, x.pageY);
-			var newpt = new Point(win.getPosition().getX() + transmat.getX(), win.getPosition().getY() + transmat.getY());
-			if(newpt.getX() < 64) newpt.setX(64);
-			if(newpt.getY() < 0) newpt.setY(0);
-			if(newpt.getY() > document.querySelectorAll(".WindowLocation")[0].offsetHeight - 24) newpt.setY(document.querySelectorAll(".WindowLocation")[0].offsetHeight - 24);
-			if(newpt.getX() > document.querySelectorAll(".WindowLocation")[0].offsetWidth - 24) newpt.setY(document.querySelectorAll(".WindowLocation")[0].offsetWidth - 24);
-
-			WindowServer.OpenWindows.get(x.data.arg1).setPosition(newpt);
-		}
-	}).on("mouseleave", {arg1: this.windowNum}, function(x)
-	{
-		WindowServer.OpenWindows.get(x.data.arg1).mouseDown = false;
+	//My JQuery(UI) drag and drop code
+//	$(".WindowLocation #Window" + this.windowNum).draggable();
+	$(".WindowLocation #Window" + this.windowNum).draggable({
+		handle: ".titlebar .moveHandle",
+		containment: ".WindowLocation",
+		animate:true
 	});
+
+	//**&*These commented lines are for my initial drag and drop code. I switched to jquery because it's probably better
+	// this.mouseDown = false;
+	// this.lastPoint = new Point(0, 0);
+	// // this.pos = new Point(0, 0);
+	// // this.startPos = new Point(0, 0);
+
+	// //Drag and drop of the window
+	// $(".WindowLocation #Window" + this.windowNum + " .titlebar .moveHandle").on("mousedown", {arg1: this.windowNum}, function(x)
+	// {
+	// 	WindowServer.OpenWindows.get(x.data.arg1).mouseDown = true;
+	// 	WindowServer.OpenWindows.get(x.data.arg1).lastPoint = new Point(x.pageX, x.pageY);
+	// }).on("mouseup", {arg1: this.windowNum}, function(x)
+	// {
+	// 	WindowServer.OpenWindows.get(x.data.arg1).mouseDown = false;
+	// }).on("mousemove", {arg1: this.windowNum}, function(x)
+	// {
+	// 	if(WindowServer.OpenWindows.get(x.data.arg1).mouseDown)
+	// 	{
+	// 		var win = WindowServer.OpenWindows.get(x.data.arg1);
+	// 		//Find the distance the mouse was moved
+	// 		var transmat = new Point(x.pageX - WindowServer.OpenWindows.get(x.data.arg1).lastPoint.getX(), x.pageY - WindowServer.OpenWindows.get(x.data.arg1).lastPoint.getY());
+	// 		WindowServer.OpenWindows.get(x.data.arg1).lastPoint = new Point(x.pageX, x.pageY);
+	// 		var newpt = new Point(win.getPosition().getX() + transmat.getX(), win.getPosition().getY() + transmat.getY());
+	// 		if(newpt.getX() < 64) newpt.setX(64);
+	// 		if(newpt.getY() < 0) newpt.setY(0);
+	// 		if(newpt.getY() > document.querySelectorAll(".WindowLocation")[0].offsetHeight - 24) newpt.setY(document.querySelectorAll(".WindowLocation")[0].offsetHeight - 24);
+	// 		if(newpt.getX() > document.querySelectorAll(".WindowLocation")[0].offsetWidth - 24) newpt.setY(document.querySelectorAll(".WindowLocation")[0].offsetWidth - 24);
+
+	// 		WindowServer.OpenWindows.get(x.data.arg1).setPosition(newpt);
+	// 	}
+	// }).on("mouseleave", {arg1: this.windowNum}, function(x)
+	// {
+	// 	WindowServer.OpenWindows.get(x.data.arg1).mouseDown = false;
+	// });
 
 	//Closing the window
 	$(".WindowLocation #Window" + this.windowNum + " .titlebar .xButton").on("click", {arg1: this.windowNum}, function(x)
@@ -148,14 +158,16 @@ var Window = function(size, position)
 	$(".WindowLocation #Window" + this.windowNum + " .titlebar .rButton").on("click", {arg1: this.windowNum}, function(x)
 	{
 		WindowServer.OpenWindows.get(x.data.arg1).setSize(new Size(
-			document.querySelectorAll(".WindowLocation")[0].offsetWidth - 64 - 4,
-			document.querySelectorAll(".WindowLocation")[0].offsetHeight - 4
+			document.querySelectorAll(".WindowLocation")[0].offsetWidth - 64 - 8,
+			document.querySelectorAll(".WindowLocation")[0].offsetHeight - 8
 		));
 		WindowServer.OpenWindows.get(x.data.arg1).setPosition(new Point(64, 0));
 	});
 
 	//Resizing the window
-	$(".WindowLocation #Window" + this.windowNum).resizable();
+	$(".WindowLocation #Window" + this.windowNum).resizable({
+		animage:true
+	});
 };
 
 Window.prototype.setPosition = function(pos)

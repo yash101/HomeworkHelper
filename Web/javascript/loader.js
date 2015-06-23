@@ -1,3 +1,5 @@
+var Configuration = null;
+
 var Loader =
 {
 	LoadedScriptsDatabase:null,
@@ -18,22 +20,29 @@ var Loader =
 
 $(document).ready(function()
 {
-	Loader.loadScript("javascript/Windows/window.js", function(data, status, httpreq)
+	ajax.get("configuration.txt", function(x)
 	{
-		winInit();
-		var WelcomeWindow = new Window(new Size(640, 480), new Point(64, 0));
-		WelcomeWindow.setTitle("Welcome!");
-		ajax.get("hypertext/welcome.php", function(x)
+		var Configuration = new ConfigurationParser();
+		Configuration.setFile(x);
+		Configuration.refresh();
+
+		Loader.loadScript("javascript/Windows/window.js", function(data, status, httpreq)
 		{
-			WelcomeWindow.setText(x);
+			winInit();
+			var WelcomeWindow = new Window(new Size(640, 480), new Point(64, 0));
+			WelcomeWindow.setTitle("Welcome!");
+			ajax.get("hypertext/welcome.php", function(x)
+			{
+				WelcomeWindow.setText(x);
+			});
+
+			$("head").append('<link rel="stylesheet" type="text/css" href="css/main.css">');
 		});
 
-		$("head").append('<link rel="stylesheet" type="text/css" href="css/main.css">');
-	});
-
-	Loader.loadScript("javascript/Launcher/launcher.js", function(data, status, httpreq)
-	{
-		Launcher.init();
-		Launcher.open();
+		Loader.loadScript("javascript/Launcher/launcher.js", function(data, status, httpreq)
+		{
+			Launcher.init();
+			Launcher.open();
+		});
 	});
 });

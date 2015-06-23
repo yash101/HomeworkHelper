@@ -1,6 +1,7 @@
 var Launcher =
 {
 	isOpen:false,
+	supportGoogle:null,
 	init:function()
 	{
 		$("head").append("<link rel=\"stylesheet\" type=\"text/css\" href=\"css/launcher.css\">");
